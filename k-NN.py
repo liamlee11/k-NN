@@ -1,84 +1,68 @@
-#Project 1: Implementation of k-NN Classifier
-#<Medical Artificial Intelligence, Spring, 2018>
-#BME 2013250622 junjae LEE
-#blank
+#Project name: Implementation of k-NN Classifier
 def unpickle(file):
-#function definition
     import pickle
-#import pickle module
     with open(file, 'rb') as fo:
-#open as binary type
         dict = pickle.load(fo, encoding='bytes')
-#assign in dictionary type
     return dict
 #function for loading data
-#blank
+
 import numpy as np
-#This project is on the basis of numpy module
-#blank
+
 batch1 = unpickle("data_batch_1")
 #loading data. It will be the first dataset of 5fold cross validation.
 Xtr1 = batch1[b'data']
 #key of train data
 Ytr1 = np.array(batch1[b'labels'])
 #key of train labels
+
 batch2 = unpickle("data_batch_2")
 #loading second data
 Xtr2 = batch2[b'data']
-#key of train data 2
 Ytr2 = np.array(batch2[b'labels'])
-#key of train labels 2
+
 batch3 = unpickle("data_batch_3")
 #loading third data
 Xtr3 = batch3[b'data']
-#key of train data 3
 Ytr3 = np.array(batch3[b'labels'])
-#key of train labels 3
+
 batch4 = unpickle("data_batch_4")
 #loading 4th data
 Xtr4 = batch4[b'data']
-#key of train data 4
 Ytr4 = np.array(batch4[b'labels'])
-#key of train labels 4
+
 batch5 = unpickle("data_batch_5")
 #loading 5th data
 Xtr5 = batch5[b'data']
-#key of tarin data 5
 Ytr5 = np.array(batch5[b'labels'])
-#key of train labels 5
 #loading the rest of dataset
+
 testbatch = unpickle("test_batch")
 #loading test data
 Xte = testbatch[b'data']
-#key of test data
 Yte = np.array(testbatch[b'labels'])
-#key of test labels
 Xtr = np.append(np.append(np.append(Xtr1, Xtr2, axis=0), np.append(Xtr3, Xtr4, axis=0), axis=0), Xtr5, axis=0)
 #append full train data
 Ytr = np.append(np.append(np.append(Ytr1, Ytr2, axis=0), np.append(Ytr3, Ytr4, axis=0), axis=0), Ytr5, axis=0)
 #append full train labels
-#blank
+
 class NearestNeighbor:
-#make class 'NearestNeighbor'
     def __init__(self):
 #initiator
         pass
-#blank
     def train(self, X, y):
 #add train function
         self.Xtr = X
 #assign train data
         self.ytr = y
 #assign train labels
-#blank
+
     def cval_5f_L1(self, f1_x, f2_x, f3_x, f4_x, f5_x, f1_y, f2_y, f3_y, f4_y, f5_y, k_index):
 #add 5fold cross validation function for L1 metric
         print('Execute a 5fold cross validation (L1 norm)')
-#print for marking
         f_num = f1_x.shape[0]
 #f_num is length of a fold data. All fold data has same length
         edge12 = np.zeros((f_num, f_num))
-#connect first and second fold data. You can see edge concept in 'report.docx'
+#connect first and second fold data.
         edge13 = np.zeros((f_num, f_num))
 #connect 1st and 3rd
         edge14 = np.zeros((f_num, f_num))
@@ -97,6 +81,7 @@ class NearestNeighbor:
 #connect 3rd and 5th
         edge45 = np.zeros((f_num, f_num))
 #connect 4th and 5th
+
         for i in range(f_num):
 #calculate edge weight between two nodes. The weight will be L1 distance
             edge12[:, i] = np.sum(np.abs(f1_x - f2_x[i, :]), axis = 1)
@@ -119,6 +104,7 @@ class NearestNeighbor:
 #between node3 and node5
             edge45[:, i] = np.sum(np.abs(f4_x - f5_x[i, :]), axis = 1)
 #between node4 and node5
+
         edge21 = edge12.T
 #between node2 and node1. It is exactly same as transpose of edge12
         edge31 = edge13.T
@@ -139,62 +125,43 @@ class NearestNeighbor:
 #between node5 and node3
         edge54 = edge45.T
 #between node5 and node4
+
         print('Edges were successfully created')
-#print for marking
         acc = np.zeros(k_index.shape[0])
-#empty list for accuracy
         val1 = np.append(np.append(edge21, edge31, axis=0), np.append(edge41, edge51, axis=0), axis=0)
 #make first dataset of 5fold cross validation
         val1_l = np.append(np.append(f2_y, f3_y), np.append(f4_y, f5_y))
-#and labels
         val1_s = np.sort(val1, axis=0)
-#sorting val1
         val1_as = np.argsort(val1, axis=0)
-#sorting val1 and take index number
         val2 = np.append(np.append(edge12, edge32, axis=0), np.append(edge42, edge52, axis=0), axis=0)
 #2nd dataset
         val2_l = np.append(np.append(f1_y, f3_y), np.append(f4_y, f5_y))
-#and labels
         val2_s = np.sort(val2, axis=0)
-#sorting val2
         val2_as = np.argsort(val2, axis=0)
-#sorting val2 and take index number
         val3 = np.append(np.append(edge13, edge23, axis=0), np.append(edge43, edge53, axis=0), axis=0)
 #3rd dataset
         val3_l = np.append(np.append(f1_y, f2_y), np.append(f4_y, f5_y))
-#and labels
         val3_s = np.sort(val3, axis=0)
-#sorting val3
         val3_as = np.argsort(val3, axis=0)
-#sorting val3 and take index number
         val4 = np.append(np.append(edge14, edge24, axis=0), np.append(edge34, edge54, axis=0), axis=0)
 #4th dataset
         val4_l = np.append(np.append(f1_y, f2_y), np.append(f3_y, f5_y))
-#and labels
         val4_s = np.sort(val4, axis=0)
-#sorting val4
         val4_as = np.argsort(val4, axis=0)
-#sorting val4 and take index number
         val5 = np.append(np.append(edge15, edge25, axis=0), np.append(edge35, edge45, axis=0), axis=0)
 #5th dataset
         val5_l = np.append(np.append(f1_y, f2_y), np.append(f3_y, f4_y))
-#and labels
         val5_s = np.sort(val5, axis=0)
-#sorting val5
         val5_as = np.argsort(val5, axis=0)
-#sorting val5 and take index number
         for k in k_index:
+            
 #start voting
             val1_index = np.zeros((f_num, 10))
-#empty list for result of val1
             val2_index = np.zeros((f_num, 10))
-#empty list for result of val2
             val3_index = np.zeros((f_num, 10))
-#empty list for result of val3
             val4_index = np.zeros((f_num, 10))
-#empty list for result of val4
             val5_index = np.zeros((f_num, 10))
-#empty list for result of val5
+            
             for p in range(k):
 #take k'th data in sorting dataset
                 for j in range(f_num):
@@ -213,14 +180,11 @@ class NearestNeighbor:
                 [np.mean(f1_y.T == np.argmax(val1_index, axis = 1)), np.mean(f2_y.T == np.argmax(val2_index, axis = 1)),
                  np.mean(f3_y.T == np.argmax(val3_index, axis = 1)), np.mean(f4_y.T == np.argmax(val4_index, axis = 1)),
                  np.mean(f5_y.T == np.argmax(val5_index, axis = 1))])
+    
 #calculate accuracy
         print('5fold cross validation was successfully completed (L1 norm)')
-#print for marking
-#blank
         return acc
-#return accuracy
-#blank
-#blank
+    
 #5fold cross validation function for L2 metric is exactly same as L1 metric except weighting edges.
 #So, I will skip comments in this part, but you can see detail concept in 'report.docx'
     def cval_5f_L2(self, f1_x, f2_x, f3_x, f4_x, f5_x, f1_y, f2_y, f3_y, f4_y, f5_y, k_index):
@@ -298,9 +262,9 @@ class NearestNeighbor:
                  np.mean(f3_y.T == np.argmax(val3_index, axis=1)), np.mean(f4_y.T == np.argmax(val4_index, axis=1)),
                  np.mean(f5_y.T == np.argmax(val5_index, axis=1))])
         print('5fold cross validation was successfully completed (L2 norm)')
-#blank
+
         return acc
-#blank
+
     def predict(self, X, k):
 #add predict function
         num_train = self.Xtr.shape[0]
@@ -308,20 +272,17 @@ class NearestNeighbor:
         num_test = X.shape[0]
 #number of test data
         distances_L1 = np.zeros((num_train, num_test))
-#empty list for L1 distances
         distances_L2 = np.zeros((num_train, num_test))
-#empty list for L2 distances
         for i in range(num_test):
+            
 #calculate distances
             distances_L1[:, i] = np.sum(np.abs(self.Xtr - X[i,:]), axis = 1)
 #L1 metric
             distances_L2[:, i] = np.sqrt(np.sum(np.square(self.Xtr - X[i, :]), axis = 1))
 #L2 metric
         pred_index_L1 = np.zeros((num_test, 10))
-#empty list for test data which was weighting(L1) in labels
         pred_index_L2 = np.zeros((num_test, 10))
-#empty list for test data which was weighting(L2) in labels
-        distances_L1_s = np.sort(distances_L1, axis=0)
+        distances_L1_s = np.sort(distances_L1, axis=0)        
 #sorting L1 distances
         distances_L2_s = np.sort(distances_L2, axis=0)
 #sorting L2 distances
@@ -334,17 +295,15 @@ class NearestNeighbor:
             for j in range(num_test):
 #input weight information which is number of one divided by distance in pred_index
                 pred_index_L1[j, self.ytr[distances_L1_as[p, j]]] = pred_index_L1[j, self.ytr[distances_L1_as[p, j]]] + 1 / (distances_L1_s[p, j] + 0.001)
-#for L1 metric
                 pred_index_L2[j, self.ytr[distances_L2_as[p, j]]] = pred_index_L2[j, self.ytr[distances_L2_as[p, j]]] + 1 / (distances_L2_s[p, j] + 0.001)
-#for L2 metric
         Ypred_L1 = np.argmax(pred_index_L1, axis = 1).T
 #finally make list of labels(L1)
         Ypred_L2 = np.argmax(pred_index_L2, axis = 1).T
 #list of labels(L2)
-#blank
+
         return Ypred_L1, Ypred_L2
 #take pridict labels data
-#blank
+
 nn = NearestNeighbor()
 #make class
 k = np.array([1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21])
@@ -354,9 +313,7 @@ acc_L1 = nn.cval_5f_L1(Xtr1, Xtr2, Xtr3, Xtr4, Xtr5, Ytr1, Ytr2, Ytr3, Ytr4, Ytr
 acc_L2 = nn.cval_5f_L2(Xtr1, Xtr2, Xtr3, Xtr4, Xtr5, Ytr1, Ytr2, Ytr3, Ytr4, Ytr5, k)
 #5fold cross validation for L2 metric
 print(acc_L1)
-#print for markikng
 print(acc_L2)
-#print for markikng
 if k.shape[0] > np.argmax(np.append(acc_L1, acc_L2, axis = 0)):
 #code for choose K value and metric
     L_best = 1
@@ -364,14 +321,14 @@ if k.shape[0] > np.argmax(np.append(acc_L1, acc_L2, axis = 0)):
 else:
     L_best = 2
     k_best = k[np.argmax(acc_L2)]
-#blank
+
 print('Best distance method : L%d' % (L_best))
 print('Best K value : %d' % (k_best))
-#blank
+
 nn.train(Xtr, Ytr)
 #train data
 [Ytr_predict_L1, Ytr_predict_L2] = nn.predict(Xte, k_best)
 #predict test data
 print('accuracy_L1 : %f' % (np.mean(Ytr_predict_L1 == Yte)))
 print('accuracy_L2 : %f' % (np.mean(Ytr_predict_L2 == Yte)))
-#blank
+
