@@ -7,7 +7,7 @@
 
 ## Summary
 
-#### Hyperparameter tuning by Cross-validation ####
+#### Hyperparameter tuning by Cross-validation
 
 ![graph](/graph.png)
 
@@ -17,7 +17,7 @@ Hyperparameter tuning 을 위한 5-Fold cross-validation 모델을 그래프로 
 
 이러한 그래프 모델을 가져온 이유는 알고리즘의 시간 복잡도를 최소화하기 위함이고, 10개의 Edge 조합에 의한 데이터셋은 가능한 최소한의 계산을 요구한다. 예를 들어 5개 중 node1을 test data 로 사용하는 fold dataset 의 컨셉은 다음과 같을 것이다. Fold1 = array(Edge21, Edg31, Edg41, Edg51) = array(Edge12.T, Edge13.T, Edge14.T, Edge15.T) (T는 전치행렬) <br/><br/>
 
-#### 시각화 과정 ####
+#### 시각화 과정
 
  다음으로, Edges 의 조합으로 생성된 dataset 의 구조를 시각화하는 과정이다.
  
@@ -53,7 +53,7 @@ CIFAR-10 가 정수형 데이터셋이기 때문에 가장 작은 distance 라�
 
 L1 에서 K가 증가할수록 acc 가 커지다가 어느순간 saturation 되고 다시 감소하는 것을 확인할 수 있는데 데이터 개수에 비해 k 값이 너무 커지게 되면 오히려 acc 가 감소하게 된다.<br/><br/>
 
-####  k – Nearest Neighbor result ####
+####  k – Nearest Neighbor result
 
 Best distance method : L1 <br/>
 Best K value : 11 <br/>
