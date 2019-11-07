@@ -24,11 +24,11 @@ Hyperparameter tuning 을 위한 5-Fold cross-validation 모델을 그래프로 
 
  다음으로, Edges 의 조합으로 생성된 dataset 의 구조를 시각화하는 과정이다.
  
- ![img1](/img1.png)
+ ![img1](/img1.PNG)
  
- ![img2](/img2.png)
+ ![img2](/img2.PNG)
  
- ![img3](/img3.png)
+ ![img3](/img3.PNG)
  
 이렇게 distance metric 을 모든 어레이에 대해 수행한 것이 edge 또는 val 이다. 이제 val 들을 sorting 하여 각 열마다 가장 가까운 distance 를 가지는 행의 distance value 와 index number 을 취한다. 이를 위한 코드를 project1_main cval_5f function 에서 확인할 수 있다.
  
