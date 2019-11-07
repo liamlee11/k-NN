@@ -7,8 +7,7 @@
 
 ## Summary
 
-
-####Hyperparameter tuning by Cross-validation####
+### Hyperparameter tuning by Cross-validation ###
 
 ![graph](/graph.png)
 
@@ -18,7 +17,7 @@ Hyperparameter tuning 을 위한 5-Fold cross-validation 모델을 그래프로 
 
 이러한 그래프 모델을 가져온 이유는 알고리즘의 시간 복잡도를 최소화하기 위함이고, 10개의 Edge 조합에 의한 데이터셋은 가능한 최소한의 계산을 요구한다. 예를 들어 5개 중 node1을 test data 로 사용하는 fold dataset 의 컨셉은 다음과 같을 것이다. Fold1 = array(Edge21, Edg31, Edg41, Edg51) = array(Edge12.T, Edge13.T, Edge14.T, Edge15.T) (T는 전치행렬) <br/>
 
-####시각화 과정####
+### 시각화 과정 ###
 
  다음으로, Edges 의 조합으로 생성된 dataset 의 구조를 시각화하는 과정이다.
  
